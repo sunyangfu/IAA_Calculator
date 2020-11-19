@@ -1,0 +1,9 @@
+datasets:
+  choice: "mae_standard_format"
+  mae_standard_format:
+    corpus:
+      path: "/Users/comparision"
+      info: "Directory that contains two sub-folder of annotation results from two independent annotators"
+    dtd_file:
+      path: "/Users/ann.dtd"
+      info: "Directory of MAE .dtd Schema"
