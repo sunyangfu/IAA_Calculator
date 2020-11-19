@@ -5,18 +5,20 @@
 
 python 3.0 above
 
-### Configuration
-place .dtd file to IAA_Calculator/input/dtd
+MAC or Linux
 
-place annotated .xml files to 
+### Configuration
+1. Place .dtd file to IAA_Calculator/input/dtd
+
+2. Place annotated .xml files to 
 IAA_Calculator/input/annotation/ann1
 IAA_Calculator/input/annotation/ann2
 
-Open config.yml, modify corpus path and .dtd path
+3. Open config.yml, modify corpus path and .dtd path
 corpus path example: full_direcctory + IAA_Calculator/input/annotation/ (do not put ann1 or ann2)
 dtd path example: full path + IAA_Calculator/input/dtd
 
-## Runn program
+## Run program
 
 By default this will output the concept specific agreement and total averaged agreement
 ```
@@ -28,7 +30,7 @@ To modify the span ratio:
 python main.py -ratio 0.7
 ```
 
-To print out mis-matched cases:
+To output the mis-matched cases:
 ```
 python main.py -mismatch 1
 ```
