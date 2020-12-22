@@ -36,20 +36,28 @@ OUTPUT_DIR_VIZ = os.path.join(ROOTDIR, "output/viz_out")
 
 corpusDir= cfg["datasets"][cfg["datasets"]["choice"]]["corpus"]["path"]
 dtd_path = cfg["datasets"][cfg["datasets"]["choice"]]["dtd_file"]["path"]
+overlap = args.ratio
 
 print ('program start...')
 print ('corpus dir: ', corpusDir)
 print ('dtd dir: ', dtd_path)
+print ('overlap ratio: ', overlap)
 
 sub_dir = glob.glob(corpusDir+'/*')
-if len(sub_dir) == 2:
-    ann1Corpus = Corpus(sub_dir[0])
-    ann2Corpus = Corpus(sub_dir[1])
+if len(sub_dir) >= 2:
+    sub_dir = [i for i in sub_dir if '.dtd' not in i and '.csv' not in i]
+    if 'ann1' in sub_dir[0]:
+        ann1Corpus = Corpus(sub_dir[0])
+        ann2Corpus = Corpus(sub_dir[1])
+    else:
+        ann1Corpus = Corpus(sub_dir[1])
+        ann2Corpus = Corpus(sub_dir[0])
+
 else:
     print ('check sub folder configuration')
 
 #IAA calculation
-parsedCorpus = Evaluation(ann1Corpus.soup, ann2Corpus.soup, dtd_path)
+parsedCorpus = Evaluation(ann1Corpus.soup, ann2Corpus.soup, dtd_path, overlap)
 if args.cp_level == True:
     print ('CONCEPT SPECIFIC AGREEMENT:')
     parsedCorpus.do_calculation_cp_level(parsedCorpus.annSpan)

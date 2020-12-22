@@ -2,8 +2,8 @@ datasets:
   choice: "mae_standard_format"
   mae_standard_format:
     corpus:
-      path: "/Users/comparision"
+      path: "/Users/Downloads/test/"
       info: "Directory that contains two sub-folder of annotation results from two independent annotators"
     dtd_file:
-      path: "/Users/ann.dtd"
+      path: "/Users/Downloads/test/COVID_v3.dtd"
       info: "Directory of MAE .dtd Schema"

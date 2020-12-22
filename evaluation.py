@@ -1,11 +1,12 @@
 from os.path import expanduser
 
 class Evaluation:
-    def __init__(self, ann1Corpus, ann2Corpus, dtdDir):
+    def __init__(self, ann1Corpus, ann2Corpus, dtdDir, overlap_ratio):
         self.labels = {}
         self.schemaElementsAttr = self.load_dtd(dtdDir)
         self.annSpan, self.txtCorpus = self.get_spans(ann1Corpus, ann2Corpus)
         self.cpLevelOutput = []
+        self.overlap_ratio = overlap_ratio
 
     def read_txt(self, indir):
         f = open(indir, 'r')
@@ -48,8 +49,10 @@ class Evaluation:
             for mae_concept in self.schemaElementsAttr:
                 for item in soup.find_all(mae_concept):
                     mae_cp = item.name
-                    txt = item['text']
-                    # txt = ''
+                    try:
+                        txt = item['text']
+                    except:
+                        txt = ''
                     #get spans from MEA v0.9 and v2.0
                     if item.has_attr('spans'):
                         attrDict = {}
@@ -89,8 +92,10 @@ class Evaluation:
             soup = ann2Corpus[i]
             for mae_concept in self.schemaElementsAttr:
                 for item in soup.find_all(mae_concept):
-                    # txt = ''
-                    txt = item['text']
+                    try:
+                        txt = item['text']
+                    except:
+                        txt = ''
                     if item.has_attr('spans'):
                         if ',' in item['spans']:
                             continue
@@ -176,8 +181,9 @@ class Evaluation:
             recall = tp / float(tp + fn)
             specificity = fn
             f1 = 2 * precision * recall / (precision + recall)
-            print("Precision\tRecall\tF1")
-            print("{:.4f}\t{:.4f}\t{:.4f}".format(precision, recall, f1))
+            iaa_ratio = tp / float(tp + fp + fn)
+            print("Precision\tRecall\tF1\tIAA_Ratio")
+            print("{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}".format(precision, recall, f1, iaa_ratio))
             print ('')
         except:
             print ("division zero error")
@@ -198,7 +204,7 @@ class Evaluation:
             aIndices = set(range(int(idx_a[0]), int(idx_a[1])))
             bIndices = set(range(int(idx_b[0]), int(idx_b[1])))
             overlap = len(aIndices & bIndices) / float(len(aIndices | bIndices))
-            if overlap >= 0.0001:
+            if overlap >= self.overlap_ratio:
                 return True
         return False
 
