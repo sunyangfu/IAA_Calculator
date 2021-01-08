@@ -134,6 +134,8 @@ class Evaluation:
 
     def do_calculation_averaged(self, spanCorpus):
         tp_doc, fp_doc, fn_doc = 0, 0, 0
+        print("TOTAL MICRO AVERAGE:")
+        print ('(Aggregation the contributions of all classes)')
         for doc in spanCorpus:
             for cp in spanCorpus[doc]:
                 tp, fp, fn = self._cal_matching_overlap(spanCorpus[doc][cp]['ann1'], spanCorpus[doc][cp]['ann2'])
@@ -158,9 +160,23 @@ class Evaluation:
                 cp_d[cp[1]] = [cp[2], cp[3], cp[4]]
             else:
                 cp_d[cp[1]] = [cp_d[cp[1]][0]+cp[2], cp_d[cp[1]][1]+cp[3], cp_d[cp[1]][2]+cp[4]]
+        precision_macro, recall_macro, f1_macro = [],[],[]
         for k in cp_d:
             print ('concept name:', k)
-            self.get_pr_f1(cp_d[k][0], cp_d[k][1], cp_d[k][2])
+            if cp_d[k][0] == 0:
+                print ('0 TP found in', k, 'please double check your result')
+                continue
+            precision, recall, f1 = self.get_pr_f1(cp_d[k][0], cp_d[k][1], cp_d[k][2])
+            precision_macro += [precision]
+            recall_macro += [recall]
+            f1_macro += [f1]
+        print ('')
+        print ('____________________')
+        print ('TOTAL MACRO AVERAGE:')
+        print ('(Compute the metric independently for each class)')
+        print("Precision\tRecall\tF1")
+        print("{:.4f}\t{:.4f}\t{:.4f}".format(sum(precision_macro)/float(len(precision_macro)), sum(recall_macro)/float(len(recall_macro)), sum(f1_macro)/float(len(f1_macro))))
+        print('')
 
     def print_mismatch(self, spanCorpus, txtCorpus, corpusDir):
         home = expanduser("~")
@@ -182,9 +198,10 @@ class Evaluation:
             specificity = fn
             f1 = 2 * precision * recall / (precision + recall)
             iaa_ratio = tp / float(tp + fp + fn)
-            print("Precision\tRecall\tF1\tIAA_Ratio")
-            print("{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}".format(precision, recall, f1, iaa_ratio))
+            print("Precision\tRecall\tF1")
+            print("{:.4f}\t{:.4f}\t{:.4f}".format(precision, recall, f1))
             print ('')
+            return precision, recall, f1
         except:
             print ("division zero error")
 

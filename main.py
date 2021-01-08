@@ -63,7 +63,6 @@ if args.cp_level == True:
     parsedCorpus.do_calculation_cp_level(parsedCorpus.annSpan)
     print ()
 if args.total_average == True:
-    print('TOTAL AVERAGE AGREEMENT:')
     parsedCorpus.do_calculation_averaged(parsedCorpus.annSpan)
     print()
 if args.mismatch == True:

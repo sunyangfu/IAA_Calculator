@@ -66,7 +66,6 @@ class MaeViz:
             self.mae_corpus = mae.load_corpus()
             mae.load_dtd()
             for fname in self.mae_corpus:
-                print (fname)
                 span_list = []
                 idx = 0
                 for ann, soup in enumerate(self.mae_corpus[fname]):
@@ -87,8 +86,9 @@ class MaeViz:
                            "entities": [[i[0], i[1], [i[2]]] for i in span_list],
                            "normalizations": [[]],
                            "attributes": []}
-                print (self.outDir)
+                # print (self.outDir)
                 self.write_html(docData, self.outDir+'/'+fname)
+            print('Visualization saved at:', self.outDir)
          elif corpusType == 'NLP_MAE':
             mae = NLP_MAE_ANN( self.resourdir, self.corpusDir, self.outDir, self.dtd_path)
             self.mae_corpus, self.nlp_corpus = mae.load_corpus()

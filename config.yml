@@ -2,8 +2,8 @@ datasets:
   choice: "mae_standard_format"
   mae_standard_format:
     corpus:
-      path: "/Users/Downloads/test/"
+      path: "/Users/m176320/Documents/a_projects/LongTerm/GenderBias/training/eval"
       info: "Directory that contains two sub-folder of annotation results from two independent annotators"
     dtd_file:
-      path: "/Users/Downloads/test/COVID_v3.dtd"
+      path: "/Users/m176320/Documents/a_projects/LongTerm/GenderBias/schema_01.dtd"
       info: "Directory of MAE .dtd Schema"
